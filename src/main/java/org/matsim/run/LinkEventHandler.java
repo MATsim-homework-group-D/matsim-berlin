@@ -5,9 +5,24 @@ import org.matsim.api.core.v01.events.LinkLeaveEvent;
 import org.matsim.api.core.v01.events.handler.LinkEnterEventHandler;
 import org.matsim.api.core.v01.events.handler.LinkLeaveEventHandler;
 
-public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHandler {
-    public LinkEventHandler(String outputFile) {
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
+public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHandler {
+
+//final variables
+    private final BufferedWriter bufferedWriter;
+
+//constructor
+    public LinkEventHandler(String outputFile) {
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile);
+            bufferedWriter = new BufferedWriter(fileWriter);
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
     }
 
     @Override
