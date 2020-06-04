@@ -23,7 +23,6 @@ public class RunEventHandler {
 
             for (int i = 0; i < linksToAnalyze.length; i++) {
                 linksToAnalyze[i]=linkReader.readLine();
-                System.out.println(linksToAnalyze[i]); //printing array to check result
             }
 
 
@@ -40,7 +39,7 @@ public class RunEventHandler {
         for (int i =0; i< linksToAnalyze.length; i++) {
             String link = linksToAnalyze[i];
 
-            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/volume_" + link + ".txt";
+            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/volume_" + link + ".csv";
 
             EventsManager eventsManager = EventsUtils.createEventsManager();
 
