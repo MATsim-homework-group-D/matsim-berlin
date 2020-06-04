@@ -9,7 +9,7 @@ public class RunEventHandlerHomework1 {
     public static void main(String[] args) {
 
         String eventInputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/it.0/berlin-v5.5-1pct.0.events.xml.gz";
-        String linkInputFile = "";
+        String linkInputFile = "scenarios/berlin-v5.5-1pct/input/linksToAnalyze.xml";
         String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/testHandledEvents.txt";
 
         EventsManager eventsManager = EventsUtils.createEventsManager();

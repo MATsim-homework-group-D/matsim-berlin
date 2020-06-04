@@ -10,14 +10,15 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class LinkEventHandlerHomework1 implements LinkEnterEventHandler, LinkLeaveEventHandler {
+public class LinkEventHandlerTest implements LinkEnterEventHandler, LinkLeaveEventHandler {
 
 //final variables
     private final BufferedWriter bufferedWriter;
     private double[] volumeLink = new double[32];
-
+    private String link;
 //constructor
-    public LinkEventHandlerHomework1(String outputFile) {
+    public LinkEventHandlerTest(String outputFile, String link) {
+        this.link = link;
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
             bufferedWriter = new BufferedWriter(fileWriter);
@@ -29,7 +30,7 @@ public class LinkEventHandlerHomework1 implements LinkEnterEventHandler, LinkLea
 
     @Override
     public void handleEvent(LinkEnterEvent linkEnterEvent) {
-        if (linkEnterEvent.getLinkId().equals(Id.createLinkId("pt_6957"))) {
+        if (linkEnterEvent.getLinkId().equals(Id.createLinkId(link))) {
             int hourSlot = (int) (linkEnterEvent.getTime()/3600);
             this.volumeLink[hourSlot]++;
         }
