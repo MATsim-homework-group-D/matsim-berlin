@@ -42,10 +42,10 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
     }
     public void printResult() {
         try {
-            bufferedWriter.write("HOUR \t \t VOLUME");
+            bufferedWriter.write("HOUR \t \t \t VOLUME");
             for(int i=0; i< 24; i++) {
                 bufferedWriter.newLine();
-                bufferedWriter.write(i+ "UHR \t \t" + this.volumeLink[i]);
+                bufferedWriter.write(i+ ":00  \t \t \t" + this.volumeLink[i]);
             }
             bufferedWriter.close();
         }
