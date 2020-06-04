@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class RunEventHandlerTest {
+public class RunEventHandler {
 
     public static void main(String[] args) {
 
@@ -18,7 +18,7 @@ public class RunEventHandlerTest {
         BufferedReader linkReader = null;
 
         try {
-            File file = new File("scenarios/berlin-v5.5-1pct/input/drt/testLinksToAnalyze.xml");
+            File file = new File("scenarios/berlin-v5.5-1pct/input/drt/linksToAnalyze.xml");
             linkReader = new BufferedReader(new FileReader(file));
 
             for (int i = 0; i < linksToAnalyze.length; i++) {
@@ -40,11 +40,11 @@ public class RunEventHandlerTest {
         for (int i =0; i< linksToAnalyze.length; i++) {
             String link = linksToAnalyze[i];
 
-            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/test" + link + ".txt";
+            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/volume_" + link + ".txt";
 
             EventsManager eventsManager = EventsUtils.createEventsManager();
 
-            LinkEventHandlerTest linkEventHandler = new LinkEventHandlerTest(outputFile, link);
+            LinkEventHandler linkEventHandler = new LinkEventHandler(outputFile, link);
             eventsManager.addHandler(linkEventHandler);
 
             MatsimEventsReader eventsReader = new MatsimEventsReader(eventsManager);

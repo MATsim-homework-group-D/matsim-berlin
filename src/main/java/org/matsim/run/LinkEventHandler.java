@@ -10,14 +10,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class LinkEventHandlerTest implements LinkEnterEventHandler, LinkLeaveEventHandler {
+public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHandler {
 
 //final variables
     private final BufferedWriter bufferedWriter;
     private double[] volumeLink = new double[32];
     private String link;
 //constructor
-    public LinkEventHandlerTest(String outputFile, String link) {
+    public LinkEventHandler(String outputFile, String link) {
         this.link = link;
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
