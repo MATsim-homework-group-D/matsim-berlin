@@ -18,7 +18,7 @@ public class RunEventHandler {
         BufferedReader linkReader = null;
 
         try {
-            File file = new File("scenarios/berlin-v5.5-1pct/input/drt/linksToAnalyze.xml");
+            File file = new File("scenarios/berlin-v5.5-1pct/input/linksToAnalyze.xml");
             linkReader = new BufferedReader(new FileReader(file));
 
             for (int i = 0; i < linksToAnalyze.length; i++) {
