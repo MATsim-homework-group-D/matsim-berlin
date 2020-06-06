@@ -1,27 +1,28 @@
 package org.matsim.run;
 
+import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.PlanElement;
-import org.matsim.api.core.v01.population.PopulationWriter;
-import org.matsim.api.core.v01.population.Route;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PlansModifierHomework1 {
+public class PlansModifierHomework1TEST {
 
     public static void main(String[] args) {
-        Path inputPlans = Paths.get(args[0]); //add first program argument in dropdown menu
-        Path outputPlans = Paths.get(args[1]); //add second program argument in dropdown menu as output file (potentially .gz)
+        Path inputPlans = Paths.get("D:/Git/MATsim/matsim-berlin-group/scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans.xml.gz");
+//        Path outputPlans = Paths.get(args[1]); //add second program argument in dropdown menu as output file (potentially .gz)
 
         Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader populationReader = new PopulationReader(scenario);
@@ -54,9 +55,34 @@ public class PlansModifierHomework1 {
             }
         }
 
-        //modify plans with this array here, no idea yet...
+        List<Id<Person>> agentsOnLinks = new ArrayList<>();
 
-        for(String linkId : removedLinks) {
+
+            for(Person person : scenario.getPopulation().getPersons().values()) {
+                System.out.println(person.getId().toString());
+                Plan plan = (Plan) person.getPlans();
+                PlanElement element = (PlanElement) plan.getPlanElements();
+                System.out.println("funzt");
+                if (element instanceof Leg) {
+                    Leg leg = (Leg) element;
+                    if (leg instanceof NetworkRoute) {
+                        NetworkRoute route = (NetworkRoute) leg;
+                        if ( route.getLinkIds().contains(removedLinks[4])) {
+                            agentsOnLinks.add(person.getId());
+                            System.out.println("AGENT GEFUNDEN");
+                        }
+                    }
+                }
+
+                //if
+/*                NetworkRoute route = (NetworkRoute)((Plan) person.getPlans()).getPlanElements();
+                if (route.getLinkIds().contains(removedLinks[2])) {
+                    Id<Person> personId = person.getId();
+                    agentsOnLinks.add(personId);
+                    System.out.println(personId.toString());*/
+                }
+
+/*
             scenario.getPopulation().getPersons().values().parallelStream()
                     .flatMap(person -> person.getPlans().stream())
                     .flatMap(plan -> plan.getPlanElements().stream())
@@ -70,9 +96,10 @@ public class PlansModifierHomework1 {
                     //.forEach(Leg::setRoute(null));
                     //.forEach(networkRoute -> networkRoute.getLinkIds().contains(linkId))
                     //.forEach(leg -> leg.setRoute(null));
-        }
+        */
 
-        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
-        populationWriter.write(outputPlans.toString());
+
+//        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
+//        populationWriter.write(outputPlans.toString());
     }
 }

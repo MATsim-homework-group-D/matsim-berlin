@@ -13,7 +13,7 @@ public class RunEventHandler {
 
     public static void main(String[] args) {
 
-        String eventInputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/it.0/berlin-v5.5-1pct.0.events.xml.gz";
+        String eventInputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/berlin-v5.5-1pct.0.events_erik.xml.gz";
         String[] linksToAnalyze = new String [27];
         BufferedReader linkReader = null;
 
@@ -39,7 +39,7 @@ public class RunEventHandler {
         for (int i =0; i< linksToAnalyze.length; i++) {
             String link = linksToAnalyze[i];
 
-            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/volume_" + link + ".csv";
+            String outputFile = "scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct/ITERS/erik_volume_" + link + ".csv";
 
             EventsManager eventsManager = EventsUtils.createEventsManager();
 
