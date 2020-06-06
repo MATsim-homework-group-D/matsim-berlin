@@ -60,7 +60,7 @@ public class PlansModifierHomework1TEST {
 
             for(Person person : scenario.getPopulation().getPersons().values()) {
                 System.out.println(person.getId().toString());
-                Plan plan = (Plan) person.getPlans();
+                Plan plan = person.getPlans(); //ERGEBNIS SIND MEHRERE PLANS!!!!
                 PlanElement element = (PlanElement) plan.getPlanElements();
                 System.out.println("funzt");
                 if (element instanceof Leg) {
