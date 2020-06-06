@@ -2,11 +2,13 @@ package org.matsim.run;
 
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.population.Leg;
+import org.matsim.api.core.v01.population.PlanElement;
 import org.matsim.api.core.v01.population.PopulationWriter;
+import org.matsim.api.core.v01.population.Route;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.population.io.PopulationReader;
+import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
-import scala.collection.script.Remove;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,22 +60,17 @@ public class PlansModifierHomework1 {
             scenario.getPopulation().getPersons().values().parallelStream()
                     .flatMap(person -> person.getPlans().stream())
                     .flatMap(plan -> plan.getPlanElements().stream())
-                    .filter(element -> element instanceof Leg)
+                    //.filter(element -> element instanceof Leg)
+                    //.map(element -> (Leg) element)
+                    .filter(element -> element instanceof NetworkRoute)
+                    .map(element -> (NetworkRoute) element)
+                    .filter(networkRoute -> networkRoute.getLinkIds().contains(linkId))
                     .map(element -> (Leg) element)
-                    .filter(leg -> leg.getRoute().getRouteType().
-                    .filter()
-
-                            //Routentyp checken
-                            //casten zu diesem Routentyp
-                            //prüfen ob es meine Links enthält
-
-                            //.getRouteDescription()
-                            //.contains(linkId))
-                  //  .forEach(leg -> leg.setRoute(null));
+                    .forEach(leg -> leg.setRoute(null));
+                    //.forEach(Leg::setRoute(null));
+                    //.forEach(networkRoute -> networkRoute.getLinkIds().contains(linkId))
+                    //.forEach(leg -> leg.setRoute(null));
         }
-
-        System.out.println(scenario.getPopulation().getPersons());
-
 
         PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
         populationWriter.write(outputPlans.toString());
