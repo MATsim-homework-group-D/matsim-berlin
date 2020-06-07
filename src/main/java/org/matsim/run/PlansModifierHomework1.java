@@ -47,7 +47,7 @@ public class PlansModifierHomework1 {
             e.printStackTrace();
         } finally {
             try {
-                assert reader != null;
+                if (reader == null) throw new AssertionError();
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
