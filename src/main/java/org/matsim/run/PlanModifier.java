@@ -29,8 +29,8 @@ public class PlanModifier {
         List<Id<Link>> supervisedLinks = bufferedReader (fileWithLinksToSupervise);
         List<Id<Person>> agentsOnSupervisedLinks = agentsToAnalyze(scenario, supervisedLinks);
         writeFileWithConcernedAgents(agentsOnSupervisedLinks);
-//      planDeleterForConcernedAgents(scenario, agentsOnSupervisedLinks); //use only one PlanDeleter!!
-        planDeleterForAgentsOfSupervisedLinks(scenario, supervisedLinks);
+        planDeleterForConcernedAgents(scenario, agentsOnSupervisedLinks); //use only one PlanDeleter!!
+//        planDeleterForAgentsOfSupervisedLinks(scenario, supervisedLinks);
     }
 
     private static List<Id<Link>> bufferedReader(File fileWithLinks) {
