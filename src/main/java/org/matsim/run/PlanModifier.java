@@ -85,4 +85,12 @@ public class PlanModifier {
         }
         return agentsOnSupervisedLinks;
     }
+
+    public void writeFileWithConcernedAgents (List<Id<Person>> concernedAgents) {
+        System.out.println("NOT IMPLEMENTED YET");
+    }
+
+    public void bufferedWriter (ArrayList list){
+        System.out.println("NOT IMPLEMENTED YET");
+    }
 }
