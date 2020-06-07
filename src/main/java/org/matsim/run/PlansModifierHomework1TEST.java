@@ -60,16 +60,21 @@ public class PlansModifierHomework1TEST {
 
             for(Person person : scenario.getPopulation().getPersons().values()) {
                 System.out.println(person.getId().toString());
-                Plan plan = person.getPlans(); //ERGEBNIS SIND MEHRERE PLANS!!!!
-                PlanElement element = (PlanElement) plan.getPlanElements();
-                System.out.println("funzt");
-                if (element instanceof Leg) {
-                    Leg leg = (Leg) element;
-                    if (leg instanceof NetworkRoute) {
-                        NetworkRoute route = (NetworkRoute) leg;
-                        if ( route.getLinkIds().contains(removedLinks[4])) {
-                            agentsOnLinks.add(person.getId());
-                            System.out.println("AGENT GEFUNDEN");
+                identifier : for (Plan plan : person.getPlans()) {
+                    for (PlanElement element : plan.getPlanElements()) {
+                        System.out.println("funzt");
+                        if (element instanceof Leg) {
+                            Leg leg = (Leg) element;
+                            if (leg instanceof NetworkRoute) {
+                                NetworkRoute route = (NetworkRoute) leg;
+                                for ( String testingLinks : removedLinks) {
+                                    if (route.getLinkIds().contains(testingLinks)) {
+                                        agentsOnLinks.add(person.getId());
+                                        System.out.println("AGENT GEFUNDEN");
+                                        break identifier;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -80,7 +85,7 @@ public class PlansModifierHomework1TEST {
                     Id<Person> personId = person.getId();
                     agentsOnLinks.add(personId);
                     System.out.println(personId.toString());*/
-                }
+            }
 
 /*
             scenario.getPopulation().getPersons().values().parallelStream()
