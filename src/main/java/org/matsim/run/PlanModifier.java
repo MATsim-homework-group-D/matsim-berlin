@@ -3,10 +3,7 @@ package org.matsim.run;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.population.Leg;
-import org.matsim.api.core.v01.population.Person;
-import org.matsim.api.core.v01.population.Plan;
-import org.matsim.api.core.v01.population.PlanElement;
+import org.matsim.api.core.v01.population.*;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.population.routes.NetworkRoute;
@@ -31,8 +28,9 @@ public class PlanModifier {
 
         List<Id<Link>> supervisedLinks = bufferedReader (fileWithLinksToSupervise);
         List<Id<Person>> agentsOnSupervisedLinks = agentsToAnalyze(scenario, supervisedLinks);
-        System.out.println(agentsOnSupervisedLinks.toString());
         writeFileWithConcernedAgents(agentsOnSupervisedLinks);
+//      planDeleterForConcernedAgents(scenario, agentsOnSupervisedLinks); //use only one PlanDeleter!!
+        planDeleterForAgentsOfSupervisedLinks(scenario, supervisedLinks);
     }
 
     private static List<Id<Link>> bufferedReader(File fileWithLinks) {
@@ -106,7 +104,54 @@ public class PlanModifier {
         }
     }
 
-    public void createPlansWithoutKantstrasse (Scenario scenario, List<Id<Person>> concernedAgents) {
-        System.out.println("NOT IMPLEMENTED YET");
+    public static void planDeleterForConcernedAgents(Scenario scenario, List<Id<Person>> concernedAgents) {
+        int counter = 0;
+        for (Person person : scenario.getPopulation().getPersons().values()) {
+            identifier : for (int i=0; i<concernedAgents.size(); i++) {
+                if (person.getId().equals(concernedAgents.get(i))) {
+                    for (Plan plan : person.getPlans()) {
+                        for (PlanElement element : plan.getPlanElements()) {
+                            if (element instanceof Leg) {
+                                Leg leg = (Leg) element;
+                                leg.setRoute(null);
+                                counter ++;
+                                System.out.println("DONE ROUTE NULL FOR " + person.getId().toString());
+                                break identifier;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
+        populationWriter.write("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
+        System.out.println("DELETED ROUTE OF "+ counter +"AGENTS");
+    }
+
+    public static void planDeleterForAgentsOfSupervisedLinks(Scenario scenario, List<Id<Link>> supervisedLinks) {
+        int counter = 0;
+        for (Person person : scenario.getPopulation().getPersons().values()) {
+            identifier: for (Plan plan : person.getPlans()) {
+                for (PlanElement element : plan.getPlanElements()) {
+                    if (element instanceof Leg) {
+                        Leg leg = (Leg) element;
+                        if (leg.getRoute() instanceof NetworkRoute) {
+                            NetworkRoute route = (NetworkRoute) leg.getRoute();
+                            for (Id<Link> testingLinks : supervisedLinks) {
+                                if (route.getLinkIds().contains(testingLinks)) {
+                                    leg.setRoute(null);
+                                    System.out.println("DONE ROUTE NULL FOR " + person.getId().toString());
+                                    counter ++;
+                                    break identifier;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
+        populationWriter.write("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
+        System.out.println("DELETED ROUTE OF "+ counter +"AGENTS");
     }
 }
