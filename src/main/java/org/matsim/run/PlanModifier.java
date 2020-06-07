@@ -12,10 +12,7 @@ import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,8 +21,10 @@ import java.util.List;
 public class PlanModifier {
 
     public static void main(String[] args) {
+
         Path inputPlans = Paths.get("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans.xml.gz");
         File fileWithLinksToSupervise = new File("scenarios/berlin-v5.5-1pct/input/linksToRemove.xml");
+
         Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader populationReader = new PopulationReader(scenario);
         populationReader.readFile(inputPlans.toString());
@@ -33,6 +32,7 @@ public class PlanModifier {
         List<Id<Link>> supervisedLinks = bufferedReader (fileWithLinksToSupervise);
         List<Id<Person>> agentsOnSupervisedLinks = agentsToAnalyze(scenario, supervisedLinks);
         System.out.println(agentsOnSupervisedLinks.toString());
+        writeFileWithConcernedAgents(agentsOnSupervisedLinks);
     }
 
     private static List<Id<Link>> bufferedReader(File fileWithLinks) {
@@ -86,11 +86,27 @@ public class PlanModifier {
         return agentsOnSupervisedLinks;
     }
 
-    public void writeFileWithConcernedAgents (List<Id<Person>> concernedAgents) {
-        System.out.println("NOT IMPLEMENTED YET");
+    public static void writeFileWithConcernedAgents (List<Id<Person>> concernedAgents) {
+        String outputConcernedAgents = "scenarios/berlin-v5.5-1pct/input/agentsOnKantstrasse.xml";
+        bufferedWriter(concernedAgents, outputConcernedAgents);
     }
 
-    public void bufferedWriter (ArrayList list){
+    public static void bufferedWriter (List<Id<Person>> list, String outputFile){
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (int i=0; i< list.size(); i++) {
+                bufferedWriter.write(list.get(i).toString());
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+    }
+
+    public void createPlansWithoutKantstrasse (Scenario scenario, List<Id<Person>> concernedAgents) {
         System.out.println("NOT IMPLEMENTED YET");
     }
 }
