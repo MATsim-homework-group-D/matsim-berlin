@@ -8,7 +8,7 @@
 		<param name="lastIteration" value="500" />
 		<param name="overwriteFiles" value="failIfDirectoryExists" />
 		<param name="runId" value="berlin-v5.5-1pct" />
-		<param name="outputDirectory" value="./scenarios/berlin-v5.5-1pct/output-berlin-v5.5-1pct" />
+		<param name="outputDirectory" value="./scenarios/berlin-v5.5-1pct/output_50it-berlin-v5.5-1pct_nullfall" />
 		<param name="writeEventsInterval" value="50" />
 		<param name="writePlansInterval" value="50" />
 	</module>
@@ -143,7 +143,7 @@
 			</parameterset>
 		</parameterset>
 	</module>
-	
+
 	<module name="transitRouter">
 		<!-- Factor with which direct walk generalized cost is multiplied before it is compared to the pt generalized cost.  Set to a very high value to reduce direct walk results. -->
 		<param name="directWalkFactor" value="1.0" />
