@@ -27,9 +27,7 @@ public class PlanModifier {
         populationReader.readFile(inputPlans.toString());
 
         List<Id<Link>> supervisedLinks = bufferedReader(fileWithLinksToSupervise);
-//        List<Id<Person>> agentsOnSupervisedLinks = agentsToAnalyze(scenario, supervisedLinks);
-//        writeFileWithConcernedAgents(agentsOnSupervisedLinks);
-        planDeleterForAgentsOfSupervisedLinks(scenario, supervisedLinks);
+        modifyPlansForAgentsOfSupervisedLinks(scenario, supervisedLinks);
     }
 
     private static List<Id<Link>> bufferedReader(File fileWithLinks) {
@@ -101,34 +99,15 @@ public class PlanModifier {
         }
     }
 
- /*   public static void planDeleterForConcernedAgents(Scenario scenario, List<Id<Person>> concernedAgents) {
-        int counter = 0;
-        for (Person person : scenario.getPopulation().getPersons().values()) {
-            for (int i = 0; i < concernedAgents.size(); i++) {
-                if (person.getId().equals(concernedAgents.get(i))) {
-                    for (Plan plan : person.getPlans()) {
-                        for (PlanElement element : plan.getPlanElements()) {
-                            if (element instanceof Leg) {
-                                Leg leg = (Leg) element;
-                                leg.setRoute(null);
-                                counter++;
-                                System.out.println("DONE ROUTE NULL FOR " + person.getId().toString());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
-        populationWriter.write("scenarios/berlin-v5.5-1pct/data/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
-        System.out.println("DELETED ROUTE OF " + counter + "AGENTS");
-    }
-  */
-
-    private static void planDeleterForAgentsOfSupervisedLinks(Scenario scenario, List<Id<Link>> supervisedLinks) {
+    private static void modifyPlansForAgentsOfSupervisedLinks(Scenario scenario, List<Id<Link>> supervisedLinks) {
+        List<Id<Person>> agentsOnSupervisedLinks = new ArrayList<>();
+        int counterNetworkLink = 0;
+        int counterGenericLink = 0;
+        int counterActivity = 0;
         int counter = 0;
 
         for (Person person : scenario.getPopulation().getPersons().values()) {
+            int indicator = 0;
             for (Plan plan : person.getPlans()) {
                 for (PlanElement element : plan.getPlanElements()) {
                     if (element instanceof Leg) {
@@ -140,6 +119,8 @@ public class PlanModifier {
                                 if (route.getLinkIds().contains(testingLinks)) {
                                     leg.setRoute(null);
                                     System.out.println("CAUSE OF NETWORKLINK DONE NULL FOR " + person.getId().toString());
+                                    counterNetworkLink ++;
+                                    indicator = 1;
                                 }
                             }
                         }
@@ -150,6 +131,8 @@ public class PlanModifier {
                                 if (route.getStartLinkId().equals(testingLinks) || route.getEndLinkId().equals(testingLinks)) {
                                     leg.setRoute(null);
                                     System.out.println("CAUSE OF START OR ENDLINK DONE NULL FOR " + person.getId().toString());
+                                    counterGenericLink ++;
+                                    indicator = 1;
                                 }
                             }
                         }
@@ -161,16 +144,25 @@ public class PlanModifier {
                             if (activity.getLinkId() != null && activity.getLinkId().equals(testingLinks)) {
                                 activity.setLinkId(null);
                                 System.out.println("DONE ACTIVITY LINK NULL FOR " + person.getId().toString());
+                                counterActivity ++;
+                                indicator = 1;
                             }
                         }
                     }
                 }
             }
-            counter ++;
+            if ( indicator == 1){
+                counter ++;
+                agentsOnSupervisedLinks.add(person.getId());
+                writeFileWithConcernedAgents(agentsOnSupervisedLinks);
+            }
         }
 
         PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
         populationWriter.write("scenarios/berlin-v5.5-1pct/data/berlin-v5.5-1pct.plans_without_Kantstrasse.xml.gz");
-        System.out.println("DELETED ROUTES OF " + counter + " AGENTS");
+        System.out.println("DELETED ROUTES OF " + counter + " AGENTS.");
+        System.out.println("DELETED " + counterNetworkLink + " ROUTES OF AGENTS CAUSE OF NETWORKLINK.");
+        System.out.println("DELETED " + counterGenericLink + " ROUTES OF AGENTS CAUSE OF GENERICLINK.");
+        System.out.println("DELETED ACTIVITYLINKS OF " + counterActivity + " AGENTS CAUSE OF ACTIVITY");
     }
 }
