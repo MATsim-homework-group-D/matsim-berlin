@@ -20,7 +20,7 @@ public class PlanModifier {
     public static void main(String[] args) {
 
         Path inputPlans = Paths.get("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans.xml.gz");
-        File fileWithLinksToSupervise = new File("scenarios/berlin-v5.5-1pct/input/linksToRemove.xml");
+        File fileWithLinksToSupervise = new File("scenarios/berlin-v5.5-1pct/data/linksToRemove.xml");
 
         Scenario scenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader populationReader = new PopulationReader(scenario);
@@ -29,7 +29,6 @@ public class PlanModifier {
         List<Id<Link>> supervisedLinks = bufferedReader(fileWithLinksToSupervise);
 //        List<Id<Person>> agentsOnSupervisedLinks = agentsToAnalyze(scenario, supervisedLinks);
 //        writeFileWithConcernedAgents(agentsOnSupervisedLinks);
-//        planDeleterForConcernedAgents(scenario, agentsOnSupervisedLinks); //use only one PlanDeleter!!
         planDeleterForAgentsOfSupervisedLinks(scenario, supervisedLinks);
     }
 
@@ -53,6 +52,7 @@ public class PlanModifier {
                 ee.printStackTrace();
             }
         }
+        System.out.println(linksToSupervise.toString());
         return linksToSupervise;
     }
 
@@ -83,16 +83,16 @@ public class PlanModifier {
     }
 
     public static void writeFileWithConcernedAgents(List<Id<Person>> concernedAgents) {
-        String outputConcernedAgents = "scenarios/berlin-v5.5-1pct/input/agentsOnKantstrasse.xml";
+        String outputConcernedAgents = "scenarios/berlin-v5.5-1pct/data/agentsOnKantstrasse.txt";
         bufferedWriter(concernedAgents, outputConcernedAgents);
     }
 
-    public static void bufferedWriter(List<Id<Person>> list, String outputFile) {
+    private static void bufferedWriter(List<Id<Person>> list, String outputFile) {
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for (int i = 0; i < list.size(); i++) {
-                bufferedWriter.write(list.get(i).toString());
+            for (Id<Person> personId : list) {
+                bufferedWriter.write(personId.toString());
                 bufferedWriter.newLine();
             }
             bufferedWriter.close();
@@ -101,7 +101,7 @@ public class PlanModifier {
         }
     }
 
-    public static void planDeleterForConcernedAgents(Scenario scenario, List<Id<Person>> concernedAgents) {
+ /*   public static void planDeleterForConcernedAgents(Scenario scenario, List<Id<Person>> concernedAgents) {
         int counter = 0;
         for (Person person : scenario.getPopulation().getPersons().values()) {
             for (int i = 0; i < concernedAgents.size(); i++) {
@@ -120,82 +120,57 @@ public class PlanModifier {
             }
         }
         PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
-        populationWriter.write("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
+        populationWriter.write("scenarios/berlin-v5.5-1pct/data/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
         System.out.println("DELETED ROUTE OF " + counter + "AGENTS");
     }
+  */
 
-    public static void planDeleterForAgentsOfSupervisedLinks(Scenario scenario, List<Id<Link>> supervisedLinks) {
+    private static void planDeleterForAgentsOfSupervisedLinks(Scenario scenario, List<Id<Link>> supervisedLinks) {
         int counter = 0;
 
-        //delete all NetworkRoutes that contains links of Kantstrasse
         for (Person person : scenario.getPopulation().getPersons().values()) {
             for (Plan plan : person.getPlans()) {
                 for (PlanElement element : plan.getPlanElements()) {
                     if (element instanceof Leg) {
                         Leg leg = (Leg) element;
+                        //delete all NetworkRoutes that contains links of Kantstrasse
                         if (leg.getRoute() instanceof NetworkRoute) {
                             NetworkRoute route = (NetworkRoute) leg.getRoute();
                             for (Id<Link> testingLinks : supervisedLinks) {
                                 if (route.getLinkIds().contains(testingLinks)) {
                                     leg.setRoute(null);
-                                    System.out.println("DONE NETWORK ROUTE NULL FOR " + person.getId().toString());
-                                    counter++;
+                                    System.out.println("CAUSE OF NETWORKLINK DONE NULL FOR " + person.getId().toString());
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-
-        //delete all generic routes that start or end on links of Kantstrasse
-        for (Person person : scenario.getPopulation().getPersons().values()) {
-            for (Plan plan : person.getPlans()) {
-                for (PlanElement element : plan.getPlanElements()) {
-                    if (element instanceof Leg) {
-                        Leg leg = (Leg) element;
-                        if (leg.getRoute() instanceof Route) {
+                        //delete all generic routes that start or end on links of Kantstrasse
+                        if (leg.getRoute() != null) {
                             Route route = leg.getRoute();
                             for (Id<Link> testingLinks : supervisedLinks) {
-                                if (route.getStartLinkId().equals(testingLinks)) {
+                                if (route.getStartLinkId().equals(testingLinks) || route.getEndLinkId().equals(testingLinks)) {
                                     leg.setRoute(null);
-                                    System.out.println("DONE ROUTE START LINK NULL FOR " + person.getId().toString());
-                                    counter++;
-                                }
-                            }
-                            for (Id<Link> testingLinks : supervisedLinks) {
-                                if (route.getEndLinkId().equals(testingLinks)) {
-                                    leg.setRoute(null);
-                                    System.out.println("DONE ROUTE END LINK NULL FOR " + person.getId().toString());
-                                    counter++;
+                                    System.out.println("CAUSE OF START OR ENDLINK DONE NULL FOR " + person.getId().toString());
                                 }
                             }
                         }
                     }
-                }
-            }
-        }
-
-        //delete all activities that contain links of Kantstrasse
-        for (Person person : scenario.getPopulation().getPersons().values()) {
-            for (Plan plan : person.getPlans()) {
-                for (PlanElement element : plan.getPlanElements()) {
+                    //delete all activities that contain links of Kantstrasse
                     if (element instanceof Activity) {
                         Activity activity = (Activity) element;
                         for (Id<Link> testingLinks : supervisedLinks) {
                             if (activity.getLinkId() != null && activity.getLinkId().equals(testingLinks)) {
                                 activity.setLinkId(null);
                                 System.out.println("DONE ACTIVITY LINK NULL FOR " + person.getId().toString());
-                                counter++;
                             }
                         }
                     }
                 }
             }
+            counter ++;
         }
 
         PopulationWriter populationWriter = new PopulationWriter(scenario.getPopulation());
-        populationWriter.write("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.plans_without_kantstrasse.xml");
+        populationWriter.write("scenarios/berlin-v5.5-1pct/data/berlin-v5.5-1pct.plans_without_Kantstrasse.xml.gz");
         System.out.println("DELETED ROUTES OF " + counter + " AGENTS");
     }
 }
