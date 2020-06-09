@@ -54,7 +54,7 @@ public class PlanModifier {
         return linksToSupervise;
     }
 
-    public static List<Id<Person>> agentsToAnalyze(Scenario scenario, List<Id<Link>> supervisedLinks) {
+    private static List<Id<Person>> agentsToAnalyze(Scenario scenario, List<Id<Link>> supervisedLinks) {
 
         List<Id<Person>> agentsOnSupervisedLinks = new ArrayList<>();
 
@@ -80,7 +80,7 @@ public class PlanModifier {
         return agentsOnSupervisedLinks;
     }
 
-    public static void writeFileWithConcernedAgents(List<Id<Person>> concernedAgents) {
+    private static void writeFileWithConcernedAgents(List<Id<Person>> concernedAgents) {
         String outputConcernedAgents = "scenarios/berlin-v5.5-1pct/data/agentsOnKantstrasse.txt";
         bufferedWriter(concernedAgents, outputConcernedAgents);
     }
