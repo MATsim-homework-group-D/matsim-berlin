@@ -14,10 +14,11 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
 
 //final variables
     private final BufferedWriter bufferedWriter;
-    private double[] volumeLink = new double[32];
+    private int[] volumeLink = new int[30];
     private String link;
+    private int summe;
 //constructor
-    public LinkEventHandler(String outputFile, String link) {
+    LinkEventHandler(String outputFile, String link) {
         this.link = link;
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
@@ -40,13 +41,17 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
     public void handleEvent(LinkLeaveEvent linkLeaveEvent) {
 
     }
-    public void printResult() {
+    void printResult() {
+        summe = 0;
         try {
             bufferedWriter.write("HOUR;VOLUME;");
-            for(int i=0; i< 24; i++) {
+            for(int i=0; i< 27; i++) {
                 bufferedWriter.newLine();
                 bufferedWriter.write(i+ ":00;" + this.volumeLink[i] + ";");
+                summe = summe + this.volumeLink[i];
             }
+            bufferedWriter.newLine();
+            bufferedWriter.write("SUMME;"+ summe + ";");
             bufferedWriter.close();
         }
         catch (IOException ee) {
