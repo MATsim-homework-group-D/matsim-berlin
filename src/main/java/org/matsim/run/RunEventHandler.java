@@ -17,8 +17,8 @@ public class RunEventHandler {
 
     public static void main(String[] args) {
 
-        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/planfall_it.49/berlin-v5.5-1pct.49.events.xml.gz";
-        File fileWithLinksToAnalyze = new File("scenarios/berlin-v5.5-1pct/data/linksToAnalyze.xml");
+        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/nullfall_it.49/berlin-v5.5-1pct.49.events.xml.gz";
+        File fileWithLinksToAnalyze = new File("scenarios/berlin-v5.5-1pct/data/linksToAnalyzeKant.txt");
         List<Id<Link>> linksToAnalyze = bufferedReader(fileWithLinksToAnalyze);
 
         EventsManager eventsManager = EventsUtils.createEventsManager();
@@ -26,7 +26,7 @@ public class RunEventHandler {
         for (Id<Link> links : linksToAnalyze) {
             String link = links.toString();
 
-            String outputFile = "scenarios/berlin-v5.5-1pct/data/planfall_" + link + ".csv";
+            String outputFile = "scenarios/berlin-v5.5-1pct/data/nullfall_kant" + link + ".csv";
 
             LinkEventHandler linkEventHandler = new LinkEventHandler(outputFile, link);
             eventsManager.addHandler(linkEventHandler);

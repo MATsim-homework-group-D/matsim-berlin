@@ -16,7 +16,6 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
     private final BufferedWriter bufferedWriter;
     private int[] volumeLink = new int[30];
     private String link;
-    private int summe;
 //constructor
     LinkEventHandler(String outputFile, String link) {
         this.link = link;
@@ -42,7 +41,7 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
 
     }
     void printResult() {
-        summe = 0;
+        int summe = 0;
         try {
             bufferedWriter.write("HOUR;VOLUME;");
             for(int i=0; i< 27; i++) {
