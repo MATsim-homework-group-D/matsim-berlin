@@ -8,10 +8,7 @@ import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.misc.OptionalTime;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -33,9 +30,8 @@ public class TestAnalyze {
         PopulationReader basePopulation = new PopulationReader(base);
         basePopulation.readFile(inputPlansBaseCase.toString());
 
-//        analyzeHomeOfAgents(base, test);
-//        analyzeTravelTime(base, test);
-        analyzeTravelDistanceOfLimitedAgents(base, test);
+        bufferedWriterToAnalyzeConcernedAgents(base, test);
+//        bufferedWriterToAnalyzeAllAgents(base);
 
 //       Scenario policy = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 //       PopulationReader policyPopulation = new PopulationReader(policy);
@@ -72,7 +68,9 @@ public class TestAnalyze {
     private static void analyzeHomeOfLimitedAgents(Scenario scenario, List<Id<Person>> agents) {
         for (Person person : scenario.getPopulation().getPersons().values()) {
             if (agents.contains(person.getId())) {
-                System.out.println(person.getAttributes().getAttribute("home-activity-zone").toString());
+                if (person.getAttributes().getAttribute("home-activity-zone") != null) {
+                    System.out.println(person.getAttributes().getAttribute("home-activity-zone").toString());
+                }
             }
         }
     }
@@ -89,11 +87,13 @@ public class TestAnalyze {
                             if (route.getTravelTime() != null) {
                                 OptionalTime time =route.getTravelTime();
                                 System.out.println(time.seconds());
+                                travelTime += time.seconds();
                             }
                         }
                     }
+                    System.out.println("AGENT " + person.getId().toString() + " NEEDS FOR PLAN " + travelTime + " SECONDS ");
                 }
-                System.out.println(person.getId().toString());
+                System.out.println("AGENT " + person.getId().toString() + " NEEDS ALL IN ALL" + travelTime + " SECONDS ");
             }
         }
     }
@@ -107,11 +107,118 @@ public class TestAnalyze {
                         if (element instanceof Leg) {
                             Leg leg = (Leg) element;
                             Route route = leg.getRoute();
-                            System.out.println(route.getDistance());
+                            distance += route.getDistance();
+                        }
+                    }
+                }
+                System.out.println("PLANDISTANCE" + distance);
+            }
+        }
+    }
+
+    private static void bufferedWriterToAnalyzeConcernedAgents(Scenario scenario, List<Id<Person>> agents){
+        BufferedWriter bufferedWriter = null;
+        try {
+            FileWriter fileWriter = new FileWriter("scenarios/berlin-v5.5-1pct/data/analysis_nullfall_concerned.csv");
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("AGENT;HOME LOCATION; TRAVELTIME; TRAVELDISTANCE;");
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+        int counter = 0;
+        for (Person person : scenario.getPopulation().getPersons().values()) {
+            String agent = null;
+            String home = null;
+            double traveltime = 0;
+            double distance = 0;
+            if (agents.contains(person.getId())) {
+                agent = person.getId().toString();
+                counter ++;
+                if (person.getAttributes().getAttribute("home-activity-zone") != null) {
+                    home = person.getAttributes().getAttribute("home-activity-zone").toString();
+                }
+                for (Plan plan : person.getPlans()) {
+                    for (PlanElement element : plan.getPlanElements()) {
+                        if (element instanceof Leg) {
+                            Leg leg = (Leg) element;
+                            Route route = leg.getRoute();
+                            distance += route.getDistance();
+                            System.out.println(distance);
+                            if (route.getTravelTime() != null) {
+                                OptionalTime time = route.getTravelTime();
+                                traveltime += time.seconds();
+                            }
+                        }
+                    }
+                }
+                traveltime = traveltime/3600;
+                try {
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(agent + ";" + home + ";" + traveltime + ";" +distance + ";");
+                }
+                catch (IOException ee) {
+                    throw new RuntimeException(ee);
+                }
+            }
+        }
+        try {
+            bufferedWriter.close();
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+        System.out.println(counter);
+    }
+
+    private static void bufferedWriterToAnalyzeAllAgents(Scenario scenario){
+        BufferedWriter bufferedWriter = null;
+        try {
+            FileWriter fileWriter = new FileWriter("scenarios/berlin-v5.5-1pct/data/analysis_nullfall_.csv");
+            bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("AGENT;HOME LOCATION; TRAVELTIME; TRAVELDISTANCE;");
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+        int counter = 0;
+        for (Person person : scenario.getPopulation().getPersons().values()) {
+            String home = null;
+            int traveltime = 0;
+            double distance = 0;
+            String agent = person.getId().toString();
+            counter ++;
+            if (person.getAttributes().getAttribute("home-activity-zone") != null) {
+                home = person.getAttributes().getAttribute("home-activity-zone").toString();
+            }
+            for (Plan plan : person.getPlans()) {
+                for (PlanElement element : plan.getPlanElements()) {
+                    if (element instanceof Leg) {
+                        Leg leg = (Leg) element;
+                        Route route = leg.getRoute();
+                        distance += route.getDistance();
+                        if (route.getTravelTime() != null) {
+                            OptionalTime time = route.getTravelTime();
+                            traveltime += time.seconds();
                         }
                     }
                 }
             }
+            traveltime = traveltime/3600;
+            try {
+                bufferedWriter.newLine();
+                bufferedWriter.write(agent + ";" + home + ";" + traveltime + ";" +distance + ";");
+            }
+            catch (IOException ee) {
+                throw new RuntimeException(ee);
+            }
         }
+        try {
+            bufferedWriter.close();
+        }
+        catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+        System.out.println(counter);
     }
 }
