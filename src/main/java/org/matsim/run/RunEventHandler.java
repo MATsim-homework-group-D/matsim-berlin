@@ -36,8 +36,6 @@ public class RunEventHandler {
 
             linkEventHandler.printResult();
         }
-
-
     }
 
     private static List<Id<Link>> bufferedReader (File fileWithLinksToAnalyze) {
