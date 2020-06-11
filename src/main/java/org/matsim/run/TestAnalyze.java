@@ -141,9 +141,13 @@ public class TestAnalyze {
                 for (Plan plan : person.getPlans()) {
                     for (PlanElement element : plan.getPlanElements()) {
                         if (element instanceof Leg) {
+                            int temp1 = 0;
                             Leg leg = (Leg) element;
                             Route route = leg.getRoute();
-                            distance += route.getDistance();
+                            temp1 = (int) ((route.getDistance()*10));
+                            double temp2= temp1/10;
+                            temp2 = temp2/1000;
+                            distance = distance + temp2; //RUNDUNG FEHLT NOCH
                             System.out.println(distance);
                             if (route.getTravelTime() != null) {
                                 OptionalTime time = route.getTravelTime();
