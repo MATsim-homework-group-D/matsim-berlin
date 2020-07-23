@@ -112,7 +112,7 @@ public class PlanModifier {
                 for (PlanElement element : plan.getPlanElements()) {
                     if (element instanceof Leg) {
                         Leg leg = (Leg) element;
-                        //delete all NetworkRoutes that contains links of Kantstrasse
+                        //delete all NetworkRoutes that contain links of Kantstrasse
                         if (leg.getRoute() instanceof NetworkRoute) {
                             NetworkRoute route = (NetworkRoute) leg.getRoute();
                             for (Id<Link> testingLinks : supervisedLinks) {
