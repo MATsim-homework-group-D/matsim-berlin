@@ -17,29 +17,24 @@ import java.util.List;
  * @author stepperstep
  */
 
-public class RunEventHandler {
+public class RunEventHandlerTEST {
 
     public static void main(String[] args) {
 
-        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/nullfall_it.49/berlin-v5.5-1pct.49.events.xml.gz";
-        File fileWithLinksToAnalyze = new File("scenarios/berlin-v5.5-1pct/data/TestFiles/TESTFileEventHandler.txt");
+        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/nullfall_it.49/nullfall_berlin-v5.5-1pct.49.events.xml.gz";
+        File fileWithLinksToAnalyze = new File("scenarios/berlin-v5.5-1pct/data/linksToAnalyze.xml");
         List<Id<Link>> linksToAnalyze = bufferedReader(fileWithLinksToAnalyze);
 
         EventsManager eventsManager = EventsUtils.createEventsManager();
 
-        for (Id<Link> links : linksToAnalyze) {
-            String link = links.toString();
+         LinkEventHandlerTEST linkEventHandler = new LinkEventHandlerTEST(linksToAnalyze);
+         eventsManager.addHandler(linkEventHandler);
 
-            String outputFile = "scenarios/berlin-v5.5-1pct/data/TestFiles/nullfall_kant" + link + ".csv";
+         MatsimEventsReader eventsReader = new MatsimEventsReader(eventsManager);
+         eventsReader.readFile(eventInputFile);
 
-            LinkEventHandler linkEventHandler = new LinkEventHandler(outputFile, link);
-            eventsManager.addHandler(linkEventHandler);
+         linkEventHandler.printResult();
 
-            MatsimEventsReader eventsReader = new MatsimEventsReader(eventsManager);
-            eventsReader.readFile(eventInputFile);
-
-            linkEventHandler.printResult();
-        }
     }
 
     private static List<Id<Link>> bufferedReader (File fileWithLinksToAnalyze) {

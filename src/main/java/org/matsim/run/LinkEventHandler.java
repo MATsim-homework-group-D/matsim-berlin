@@ -10,12 +10,17 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * @author stepperstep
+ */
+
 public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHandler {
 
 //final variables
     private final BufferedWriter bufferedWriter;
     private int[] volumeLink = new int[30];
     private String link;
+
 //constructor
     LinkEventHandler(String outputFile, String link) {
         this.link = link;
@@ -28,8 +33,9 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
         }
     }
 
+//methods
     @Override
-    public void handleEvent(LinkEnterEvent linkEnterEvent) {
+    public void handleEvent(LinkEnterEvent linkEnterEvent) {    //LinkEnterEventHandler
         if (linkEnterEvent.getLinkId().equals(Id.createLinkId(link))) {
             int hourSlot = (int) (linkEnterEvent.getTime()/3600);
             this.volumeLink[hourSlot]++;
@@ -37,10 +43,11 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
     }
 
     @Override
-    public void handleEvent(LinkLeaveEvent linkLeaveEvent) {
-
+    public void handleEvent(LinkLeaveEvent linkLeaveEvent) {    //LinkLeaveEventHandler
+        //possibility to analyze traffic jam with time differences
     }
-    void printResult() {
+
+    void printResult() {    //Printer for results of Analysis with EventHandler
         int summe = 0;
         try {
             bufferedWriter.write("HOUR;VOLUME;");
