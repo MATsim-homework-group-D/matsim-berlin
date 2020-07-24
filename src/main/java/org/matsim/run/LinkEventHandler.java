@@ -16,21 +16,21 @@ import java.util.List;
  * @author stepperstep
  */
 
-public class LinkEventHandlerTEST implements LinkEnterEventHandler, LinkLeaveEventHandler {
+public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHandler {
 
 //final variables
     private final BufferedWriter bufferedWriter;
     private List<Id<Link>> linkIds;
     private int numberOfLinks;
     private int[] [] volumeLink;
-    private String outputFile = "scenarios/berlin-v5.5-1pct/data/TestFiles/TestAuswertungAlle.csv";
-    private String linkId;
-//constructor
-    LinkEventHandlerTEST(List<Id<Link>> linkIds) {
+
+    //constructor
+    LinkEventHandler(List<Id<Link>> linkIds) {
         this.linkIds = linkIds;
         this.numberOfLinks = this.linkIds.size();
         this.volumeLink = new int[30][numberOfLinks];
         try {
+            String outputFile = "scenarios/berlin-v5.5-1pct/data/TestFiles/TestAuswertungAlle.csv";
             FileWriter fileWriter = new FileWriter(outputFile);
             bufferedWriter = new BufferedWriter(fileWriter);
         }
@@ -60,7 +60,7 @@ public class LinkEventHandlerTEST implements LinkEnterEventHandler, LinkLeaveEve
         try {
             bufferedWriter.write("HOUR;");
             for (Id<Link> links : linkIds) {
-                linkId = links.toString();
+                String linkId = links.toString();
                 bufferedWriter.write(linkId + ";");
             }
             for (int i=0; i< 27; i++) {

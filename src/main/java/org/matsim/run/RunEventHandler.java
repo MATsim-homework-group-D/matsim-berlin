@@ -17,7 +17,7 @@ import java.util.List;
  * @author stepperstep
  */
 
-public class RunEventHandlerTEST {
+public class RunEventHandler {
 
     public static void main(String[] args) {
 
@@ -27,14 +27,13 @@ public class RunEventHandlerTEST {
 
         EventsManager eventsManager = EventsUtils.createEventsManager();
 
-         LinkEventHandlerTEST linkEventHandler = new LinkEventHandlerTEST(linksToAnalyze);
-         eventsManager.addHandler(linkEventHandler);
+        LinkEventHandler linkEventHandler = new LinkEventHandler(linksToAnalyze);
+        eventsManager.addHandler(linkEventHandler);
 
-         MatsimEventsReader eventsReader = new MatsimEventsReader(eventsManager);
-         eventsReader.readFile(eventInputFile);
+        MatsimEventsReader eventsReader = new MatsimEventsReader(eventsManager);
+        eventsReader.readFile(eventInputFile);
 
-         linkEventHandler.printResult();
-
+        linkEventHandler.printResult();
     }
 
     private static List<Id<Link>> bufferedReader (File fileWithLinksToAnalyze) {
