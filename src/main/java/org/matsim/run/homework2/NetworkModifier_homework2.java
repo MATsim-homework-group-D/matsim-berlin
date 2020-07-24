@@ -13,7 +13,7 @@ public class NetworkModifier_homework2 {
 
     public static void main(String[] args) {
         Path inputNetwork = Paths.get("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-network_without_kantstrasse.xml");
-        Path outputNetwork = Paths.get("berlin-v5.5-network_U1extension_without_kantstrasse.xml");
+        Path outputNetwork = Paths.get("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-network_U1extension_without_kantstrasse.xml");
 
         Network network = NetworkUtils.createNetwork();
         new MatsimNetworkReader(network).readFile(inputNetwork.toString());
