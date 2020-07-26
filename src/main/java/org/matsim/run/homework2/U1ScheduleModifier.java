@@ -16,7 +16,7 @@ public class U1ScheduleModifier {
         Scenario scenario = ScenarioUtils.loadScenario(config);
 
         TransitSchedule transitSchedule = scenario.getTransitSchedule();
-        TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1",TransitLine.class));
+        TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
         System.out.println(U1.toString());
         System.out.println("PLATZHALTER");
         System.out.println(U1.getRoutes().toString());

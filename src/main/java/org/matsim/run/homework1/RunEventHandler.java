@@ -1,4 +1,4 @@
-package org.matsim.run;
+package org.matsim.run.homework1;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
