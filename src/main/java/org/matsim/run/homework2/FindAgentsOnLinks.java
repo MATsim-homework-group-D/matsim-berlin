@@ -97,7 +97,7 @@ public class FindAgentsOnLinks {
                         Activity activity = (Activity) element;
                         for (Id<Link> wantedLink : links) {
                             if (activity.getLinkId() != null && activity.getLinkId().equals(wantedLink)) {
-                                System.out.println("ACTIVITY FOUND FOR ACTIVITY.getType " + activity.getType() + " FOR PERSON " person.getId().toString());
+                                System.out.println("ACTIVITY FOUND FOR ACTIVITY.getType " + activity.getType() + " FOR PERSON " + person.getId().toString());
                                 indicator = 1;
                             }
                         }
