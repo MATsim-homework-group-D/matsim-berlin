@@ -6,7 +6,10 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.pt.transitSchedule.api.TransitLine;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
+
+import java.util.Map;
 
 public class U1ScheduleModifier {
 
@@ -17,8 +20,7 @@ public class U1ScheduleModifier {
 
         TransitSchedule transitSchedule = scenario.getTransitSchedule();
         TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
-        System.out.println(U1.toString());
-        System.out.println("PLATZHALTER");
-        System.out.println(U1.getRoutes().toString());
+        for (RouteU1.getRoutes().;
+
     }
 }
