@@ -29,31 +29,31 @@ public class NetworkModifier_homework2 {
 
         //---direction west---
         //U1_001
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_001"), network.getNodes().get(Id.createNodeId("pt_070201013302")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 431., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_001"), network.getNodes().get(Id.createNodeId("pt_070201013302")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 431., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_002
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_002"), network.getNodes().get(Id.createNodeId("pt_070101001403")), network.getNodes().get(Id.createNodeId("pt_070101000864")), 910., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_002"), network.getNodes().get(Id.createNodeId("pt_070101001403")), network.getNodes().get(Id.createNodeId("pt_070101000864")), 910., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_003
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_003"), network.getNodes().get(Id.createNodeId("pt_070101000864")), network.getNodes().get(Id.createNodeId("26642092")), 777., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_003"), network.getNodes().get(Id.createNodeId("pt_070101000864")), network.getNodes().get(Id.createNodeId("26642092")), 777., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_004
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_004"), network.getNodes().get(Id.createNodeId("26642092")), network.getNodes().get(Id.createNodeId("pt_060024100801")), 919., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_004"), network.getNodes().get(Id.createNodeId("26642092")), network.getNodes().get(Id.createNodeId("pt_060024100801")), 919., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_005
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_005"), network.getNodes().get(Id.createNodeId("pt_060024100801")), network.getNodes().get(Id.createNodeId("pt_070101001449")), 852., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_005"), network.getNodes().get(Id.createNodeId("pt_060024100801")), network.getNodes().get(Id.createNodeId("pt_070101001449")), 852., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_006
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_006"), network.getNodes().get(Id.createNodeId("pt_070101001449")), network.getNodes().get(Id.createNodeId("pt_070201024502")), 660., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_006"), network.getNodes().get(Id.createNodeId("pt_070101001449")), network.getNodes().get(Id.createNodeId("pt_070201024502")), 660., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
 
         //---direction east---
         //U1_010
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_010"), network.getNodes().get(Id.createNodeId("pt_070201024502")), network.getNodes().get(Id.createNodeId("pt_070101001449")), 660., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_010"), network.getNodes().get(Id.createNodeId("pt_070201024502")), network.getNodes().get(Id.createNodeId("pt_070101001449")), 660., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_020
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_020"), network.getNodes().get(Id.createNodeId("pt_070101001449")), network.getNodes().get(Id.createNodeId("pt_060024100801")), 852., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_020"), network.getNodes().get(Id.createNodeId("pt_070101001449")), network.getNodes().get(Id.createNodeId("pt_060024100801")), 852., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_030
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_030"), network.getNodes().get(Id.createNodeId("pt_060024100801")), network.getNodes().get(Id.createNodeId("26642092")), 919., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_030"), network.getNodes().get(Id.createNodeId("pt_060024100801")), network.getNodes().get(Id.createNodeId("26642092")), 919., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_040
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_040"), network.getNodes().get(Id.createNodeId("26642092")), network.getNodes().get(Id.createNodeId("pt_070101000864")), 777., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_040"), network.getNodes().get(Id.createNodeId("26642092")), network.getNodes().get(Id.createNodeId("pt_070101000864")), 777., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_050
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_050"), network.getNodes().get(Id.createNodeId("pt_070101000864")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 910., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_050"), network.getNodes().get(Id.createNodeId("pt_070101000864")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 910., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_060
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_060"), network.getNodes().get(Id.createNodeId("pt_070101001403")), network.getNodes().get(Id.createNodeId("pt_070201013302")), 431., 12.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_060"), network.getNodes().get(Id.createNodeId("pt_070101001403")), network.getNodes().get(Id.createNodeId("pt_070201013302")), 431., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
 
         new NetworkWriter(network).write(outputNetwork.toString());
 
