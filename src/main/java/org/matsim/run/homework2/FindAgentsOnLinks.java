@@ -22,9 +22,9 @@ public class FindAgentsOnLinks {
 
     public static void main(String[] args) {
 
-        Path baseCasePlans = Paths.get("");
-        Path policyCasePlans = Paths.get("");
-        File kudammLinks = new File("");
+        Path baseCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/nullfall_it.49/nullfall_berlin-v5.5-1pct.output_plans.xml.gz");
+        Path policyCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/planfall_it.49/planfall_berlin-v5.5-1pct.output_plans.xml.gz");
+        File kudammLinks = new File("scenarios/berlin-v5.5-1pct/data/linksKudamm.txt");
 
         Scenario baseCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader baseCasePopulationReader = new PopulationReader(baseCaseScenario);
@@ -37,6 +37,11 @@ public class FindAgentsOnLinks {
         List<Id<Link>> links = bufferedReader(kudammLinks);
         List<Id<Person>> baseCaseReceivedAgents = agentsOnLinks(baseCaseScenario, links);
         List<Id<Person>> policyCaseReceivedAgents = agentsOnLinks(policyCaseScenario, links);
+
+        System.out.println("BASE CASE");
+        System.out.println(baseCaseReceivedAgents.toString());
+        System.out.println("POLICY CASE");
+        System.out.println(policyCaseReceivedAgents.toString());
 
 
     }
@@ -79,7 +84,7 @@ public class FindAgentsOnLinks {
                             NetworkRoute networkRoute = (NetworkRoute) route;
                             for (Id<Link> wantedLink : links) {
                                 if (networkRoute.getLinkIds().contains(wantedLink)) {
-                                    System.out.println("NETWORKLINK FOUND FOR PLAN.gettype " + plan.getType() + " ELEMENTS.getAttributes.toString " + element.getAttributes().toString() + " LEG.getMode " + leg.getMode() + " FOR PERSON " + person.getId().toString());
+                                    System.out.println("NETWORKLINK FOUND FOR LEG.getMode " + leg.getMode() + " NETWORKROUTE.getDistance " + networkRoute.getDistance() + " FOR AGENT " + person.getId().toString());
                                     indicator = 1;
                                 }
                             }
@@ -87,7 +92,7 @@ public class FindAgentsOnLinks {
                         if (route != null) {
                             for (Id<Link> wantedLink : links) {
                                 if (route.getStartLinkId().equals(wantedLink) || route.getEndLinkId().equals(wantedLink)) {
-                                    System.out.println("GENERICLINK FOUND FOR ELEMENTS.getClass.toString " + element.getClass().toString() + " LEG.getTravelTime.toString " + leg.getTravelTime().toString() + " FOR PERSON " + person.getId().toString());
+                                    System.out.println("GENERICLINK FOUND FOR LEG.getAttributes " + leg.getAttributes().toString() + " LEG.getMode " + leg.getMode() + " FOR PERSON " + person.getId().toString());
                                     indicator = 1;
                                 }
                             }
@@ -97,7 +102,7 @@ public class FindAgentsOnLinks {
                         Activity activity = (Activity) element;
                         for (Id<Link> wantedLink : links) {
                             if (activity.getLinkId() != null && activity.getLinkId().equals(wantedLink)) {
-                                System.out.println("ACTIVITY FOUND FOR ACTIVITY.getType " + activity.getType() + " FOR PERSON " + person.getId().toString());
+                                System.out.println("ACTIVITY FOUND FOR ACTIVITY.type " + activity.getType() + " FOR PERSON " + person.getId().toString());
                                 indicator = 1;
                             }
                         }
@@ -106,8 +111,10 @@ public class FindAgentsOnLinks {
             }
             if (indicator == 1) {
                 agents.add(person.getId());
+                counter++;
             }
         }
+        System.out.println("------------------<<<<>>>>>> " + counter);
         return agents;
     }
 }

@@ -20,7 +20,6 @@ public class U1ScheduleModifier {
 
         TransitSchedule transitSchedule = scenario.getTransitSchedule();
         TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
-        for (RouteU1.getRoutes().;
 
     }
 }
