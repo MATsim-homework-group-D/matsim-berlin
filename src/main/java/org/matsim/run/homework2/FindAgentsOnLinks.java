@@ -9,10 +9,7 @@ import org.matsim.core.population.io.PopulationReader;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,8 +19,8 @@ public class FindAgentsOnLinks {
 
     public static void main(String[] args) {
 
-        Path baseCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/nullfall_it.49/nullfall_berlin-v5.5-1pct.output_plans.xml.gz");
-        Path policyCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/planfall_it.49/planfall_berlin-v5.5-1pct.output_plans.xml.gz");
+        Path baseCasePlans = Paths.get(""); //fill in relative path of basecase_plans
+        Path policyCasePlans = Paths.get(""); //fill in relative path of policycase_plans
         File kudammLinks = new File("scenarios/berlin-v5.5-1pct/data/linksKudamm.txt");
 
         Scenario baseCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
@@ -42,8 +39,6 @@ public class FindAgentsOnLinks {
         System.out.println(baseCaseReceivedAgents.toString());
         System.out.println("POLICY CASE");
         System.out.println(policyCaseReceivedAgents.toString());
-
-
     }
 
     private static List<Id<Link>> bufferedReader(File linkFile) {
@@ -69,6 +64,37 @@ public class FindAgentsOnLinks {
         return networkLinks;
     }
 
+    private static void bufferedWriterToTxt(List<Id<Person>> list) {
+        File outputFile = new File(""); //insert relative Path for new txt-File
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (Id<Person> personId : list) {
+                bufferedWriter.write(personId.toString());
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+    }
+/*
+    private static void bufferedWriterToCsv(List<Id<Person>> baseCaseAgents, List<Id<Person>> policyCaseAgents) {
+        File outputFile = new File(""); //insert relative Path for new csv-File
+        try {
+            FileWriter fileWriter = new FileWriter(outputFile);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write("base case;policy case");
+            for (Id<Person> personId : list) {
+                bufferedWriter.write(personId.toString());
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException ee) {
+            throw new RuntimeException(ee);
+        }
+    }
+*/
     private static List<Id<Person>> agentsOnLinks (Scenario scenario, List<Id<Link>> links) {
         List<Id<Person>> agents = new ArrayList<>();
         int counter = 0;
@@ -80,6 +106,7 @@ public class FindAgentsOnLinks {
                     if (element instanceof Leg) {
                         Leg leg = (Leg) element;
                         Route route = leg.getRoute();
+                        //received agents of NetworkRoute
                         if (route instanceof NetworkRoute) {
                             NetworkRoute networkRoute = (NetworkRoute) route;
                             for (Id<Link> wantedLink : links) {
@@ -89,6 +116,7 @@ public class FindAgentsOnLinks {
                                 }
                             }
                         }
+                        //received agents of generic routes
                         if (route != null) {
                             for (Id<Link> wantedLink : links) {
                                 if (route.getStartLinkId().equals(wantedLink) || route.getEndLinkId().equals(wantedLink)) {
@@ -98,6 +126,7 @@ public class FindAgentsOnLinks {
                             }
                         }
                     }
+                    //received agents of activities
                     if (element instanceof Activity) {
                         Activity activity = (Activity) element;
                         for (Id<Link> wantedLink : links) {
@@ -114,7 +143,7 @@ public class FindAgentsOnLinks {
                 counter++;
             }
         }
-        System.out.println("------------------<<<<>>>>>> " + counter);
+        System.out.println(counter);
         return agents;
     }
 }
