@@ -8,6 +8,7 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
+import org.matsim.core.utils.misc.OptionalTime;
 import org.matsim.pt.transitSchedule.TransitRouteStopImpl;
 import org.matsim.pt.transitSchedule.TransitStopFacilityImpl;
 import org.matsim.pt.transitSchedule.api.*;
@@ -91,7 +92,6 @@ public class U1ScheduleModifier {
 
 
 */
-
 
             System.out.println(transitRoutes[i].getRoute().getStartLinkId().toString());
             System.out.println(transitRoutes [i].getRoute().getLinkIds().toString());
