@@ -81,7 +81,7 @@ public final class RunBerlinScenario_U1Extension_WithoutKantstrasse {
 		Controler controler = prepareControler( scenario ) ;
 
 		//in the lab Dominik did this down in the prepareControler method, but it's working from here and might be easier to access
-		config.controler().setLastIteration(1); //Erik: changed last iteration to 249, total iterations = 250
+		config.controler().setLastIteration(249); //Erik: changed last iteration to 249, total iterations = 250
 
 		controler.run() ;
 
