@@ -21,7 +21,7 @@
 		<param name="inputNetworkFile" value="berlin-v5.5-network_U1extension_without_kantstrasse.xml" />
 	</module>
 	<module name="plans" >
-		<param name="inputPlansFile" value="berlin-v5.5-1pct.plans_without_Kantstrasse.xml.gz" />
+		<param name="inputPlansFile" value="berlin-v5.5-1pct.plans_without_Kantstrasse.xml" />
 		<param name="removingUnnecessaryPlanAttributes" value="true" />
 	</module>
 	<module name="vehicles" >
