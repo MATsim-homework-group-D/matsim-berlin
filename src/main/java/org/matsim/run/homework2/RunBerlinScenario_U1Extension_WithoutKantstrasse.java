@@ -73,7 +73,7 @@ public final class RunBerlinScenario_U1Extension_WithoutKantstrasse {
 		}
 		
 		if ( args.length==0 ) {
-			args = new String[] {"scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.config_without_kantstrasse.xml"}  ; //Erik: changed to 1pct-input-config without kantstrasse
+			args = new String[] {"scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.config_U1extension_without_kantstrasse.xml"}  ; //Erik: changed to 1pct-input-config without kantstrasse
 		}
 
 		Config config = prepareConfig( args ) ;
@@ -81,7 +81,7 @@ public final class RunBerlinScenario_U1Extension_WithoutKantstrasse {
 		Controler controler = prepareControler( scenario ) ;
 
 		//in the lab Dominik did this down in the prepareControler method, but it's working from here and might be easier to access
-		config.controler().setLastIteration(249); //Erik: changed last iteration to 249, total iterations = 250
+		config.controler().setLastIteration(1); //Erik: changed last iteration to 249, total iterations = 250
 
 		controler.run() ;
 

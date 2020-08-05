@@ -29,7 +29,7 @@ public class NetworkModifier_homework2 {
 
         //---direction west---
         //U1_001
-        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_001"), network.getNodes().get(Id.createNodeId("pt_070201013302")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 431., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
+        NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_001"), network.getNodes().get(Id.createNodeId("pt_070201013301")), network.getNodes().get(Id.createNodeId("pt_070101001403")), 431., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_002
         NetworkUtils.createAndAddLink(network, Id.createLinkId("U1_002"), network.getNodes().get(Id.createNodeId("pt_070101001403")), network.getNodes().get(Id.createNodeId("pt_070101000864")), 910., 9.,100000., 1.).setAllowedModes(CollectionUtils.stringToSet("pt"));
         //U1_003
