@@ -8,9 +8,6 @@ import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.population.routes.NetworkRoute;
 import org.matsim.core.scenario.ScenarioUtils;
-import org.matsim.core.utils.misc.OptionalTime;
-import org.matsim.pt.transitSchedule.TransitRouteStopImpl;
-import org.matsim.pt.transitSchedule.TransitStopFacilityImpl;
 import org.matsim.pt.transitSchedule.api.*;
 
 import java.nio.file.Path;
@@ -35,6 +32,73 @@ public class U1ScheduleModifier {
         TransitSchedule transitSchedule = scenario.getTransitSchedule();
         TransitScheduleFactory tsf = transitSchedule.getFactory();
 
+//<stopFacilitiy>
+        //coordinates
+        Coord u_Bleibtreustr = new Coord(4589751.257219473,5819551.3163263835);
+        Coord u_Adenauerplatz = new Coord(4588884.259735091,5819352.321299794);
+        Coord u_Kracauerplatz = new Coord(4588155.194292864,5819492.335208873);
+        Coord u_Westkreuz = new Coord(4587231.222792794,5819441.303777937);
+        Coord u_Masurenallee = new Coord(4586931.214653902,5820057.284003928);
+        Coord u_Theodor_Heuss_Platz = new Coord(4586531.200568646,5820391.249467583);
+
+        //facilities
+        TransitStopFacility u1_stop_001 = tsf.createTransitStopFacility(Id.create("U1_stop_001", TransitStopFacility.class), u_Bleibtreustr, false);
+        TransitStopFacility u1_stop_002 = tsf.createTransitStopFacility(Id.create("U1_stop_002", TransitStopFacility.class), u_Adenauerplatz, false);
+        TransitStopFacility u1_stop_003 = tsf.createTransitStopFacility(Id.create("U1_stop_003", TransitStopFacility.class), u_Kracauerplatz, false);
+        TransitStopFacility u1_stop_004 = tsf.createTransitStopFacility(Id.create("U1_stop_004", TransitStopFacility.class), u_Westkreuz, false);
+        TransitStopFacility u1_stop_005 = tsf.createTransitStopFacility(Id.create("U1_stop_005", TransitStopFacility.class), u_Masurenallee, false);
+        TransitStopFacility u1_stop_006 = tsf.createTransitStopFacility(Id.create("U1_stop_006", TransitStopFacility.class), u_Theodor_Heuss_Platz, false);
+        TransitStopFacility u1_stop_010 = tsf.createTransitStopFacility(Id.create("U1_stop_010", TransitStopFacility.class), u_Theodor_Heuss_Platz, false);
+        TransitStopFacility u1_stop_020 = tsf.createTransitStopFacility(Id.create("U1_stop_020", TransitStopFacility.class), u_Masurenallee, false);
+        TransitStopFacility u1_stop_030 = tsf.createTransitStopFacility(Id.create("U1_stop_030", TransitStopFacility.class), u_Westkreuz, false);
+        TransitStopFacility u1_stop_040 = tsf.createTransitStopFacility(Id.create("U1_stop_040", TransitStopFacility.class), u_Kracauerplatz, false);
+        TransitStopFacility u1_stop_050 = tsf.createTransitStopFacility(Id.create("U1_stop_050", TransitStopFacility.class), u_Adenauerplatz, false);
+        TransitStopFacility u1_stop_060 = tsf.createTransitStopFacility(Id.create("U1_stop_060", TransitStopFacility.class), u_Bleibtreustr, false);
+
+        //names
+        u1_stop_001.setName("U Bleibtreustr.");
+        u1_stop_002.setName("U Adenauerplatz (Berlin) [U1]");
+        u1_stop_003.setName("U Kracauerplatz (Berlin)");
+        u1_stop_004.setName("S+U Westkreuz [U1]");
+        u1_stop_005.setName("U Masurenallee/ZOB (Berlin)");
+        u1_stop_006.setName("U Theodor-Heuss-Platz [U1]");
+        u1_stop_010.setName("U Theodor-Heuss-Platz [U1]");
+        u1_stop_020.setName("U Masurenallee/ZOB (Berlin)");
+        u1_stop_030.setName("S+U Westkreuz [U1]");
+        u1_stop_040.setName("U Kracauerplatz (Berlin)");
+        u1_stop_050.setName("U Adenauerplatz (Berlin) [U1]");
+        u1_stop_060.setName("U Bleibtreustr.");
+
+        //referenced LinkId
+        u1_stop_001.setLinkId(Id.createLinkId("U1_001"));
+        u1_stop_002.setLinkId(Id.createLinkId("U1_002"));
+        u1_stop_003.setLinkId(Id.createLinkId("U1_003"));
+        u1_stop_004.setLinkId(Id.createLinkId("U1_004"));
+        u1_stop_005.setLinkId(Id.createLinkId("U1_005"));
+        u1_stop_006.setLinkId(Id.createLinkId("U1_006"));
+        u1_stop_010.setLinkId(Id.createLinkId("pt_43069"));
+        u1_stop_020.setLinkId(Id.createLinkId("U1_010"));
+        u1_stop_030.setLinkId(Id.createLinkId("U1_020"));
+        u1_stop_040.setLinkId(Id.createLinkId("U1_030"));
+        u1_stop_050.setLinkId(Id.createLinkId("U1_040"));
+        u1_stop_060.setLinkId(Id.createLinkId("U1_050"));
+        //Uhlandstraßeu1_stop_001.setLinkId(Id.createLinkId("U1_060"));
+
+        //add to TransitSchedule
+        transitSchedule.addStopFacility(u1_stop_001);
+        transitSchedule.addStopFacility(u1_stop_002);
+        transitSchedule.addStopFacility(u1_stop_003);
+        transitSchedule.addStopFacility(u1_stop_004);
+        transitSchedule.addStopFacility(u1_stop_005);
+        transitSchedule.addStopFacility(u1_stop_006);
+        transitSchedule.addStopFacility(u1_stop_010);
+        transitSchedule.addStopFacility(u1_stop_020);
+        transitSchedule.addStopFacility(u1_stop_030);
+        transitSchedule.addStopFacility(u1_stop_040);
+        transitSchedule.addStopFacility(u1_stop_050);
+        transitSchedule.addStopFacility(u1_stop_060);
+//</stopFacilitiy>
+//<routes>
         TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
         Map<Id<TransitRoute>, TransitRoute> routes = U1.getRoutes();
 
