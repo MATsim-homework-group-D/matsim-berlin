@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindAgentsOnLinks {
+public class agentsOnLinksAnalysis {
 
     public static void main(String[] args) {
 
@@ -27,19 +27,26 @@ public class FindAgentsOnLinks {
 //outputFiles
         File baseCaseSummary = new File("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudamm_base.txt"); // <-- fill in relative Path for new txt-File
         File policyCaseSummary = new File("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudamm_policy.txt"); // <-- fill in relative Path for new txt-File
-        File summary = new File (""); // <-- fill in relative Path for new txt-File
+        File baseCaseSummary_extended = new File ("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudammSummary_base.csv"); // <-- fill in relative Path for new csv-File
+        File policyCaseSummary_extended = new File ("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudammSummary_policy.csv"); // <-- fill in relative Path for new csv-File
 
+        List<Id<Link>> links = bufferedReader(AgentsOnLinks);
+
+//base case
+/*
         Scenario baseCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader baseCasePopulationReader = new PopulationReader(baseCaseScenario);
         baseCasePopulationReader.readFile(baseCasePlans.toString());
 
-        List<Id<Link>> links = bufferedReader(AgentsOnLinks);
         List<Id<Person>> baseCaseReceivedAgents = agentsOnLinks(baseCaseScenario, links);
 
         System.out.println("BASE CASE");
         System.out.println(baseCaseReceivedAgents.toString());
         bufferedWriterToTxt(baseCaseReceivedAgents, baseCaseSummary);
+*/
+// es ist immer nur eine Auswertung möglich bei geringem Arbeitsspeicher!!! policy oder base case je nach Ausklammerung.
 
+//policy case
         Scenario policyCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader policyCasePopulationReader = new PopulationReader(policyCaseScenario);
         policyCasePopulationReader.readFile(policyCasePlans.toString());
@@ -48,7 +55,7 @@ public class FindAgentsOnLinks {
 
         System.out.println("POLICY CASE");
         System.out.println(policyCaseReceivedAgents.toString());
-        bufferedWriterToTxt(baseCaseReceivedAgents, policyCaseSummary);
+        bufferedWriterToTxt(policyCaseReceivedAgents, policyCaseSummary);
     }
 
     private static List<Id<Link>> bufferedReader(File linkFile) {
