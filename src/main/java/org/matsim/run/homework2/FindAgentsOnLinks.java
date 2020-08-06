@@ -19,26 +19,36 @@ public class FindAgentsOnLinks {
 
     public static void main(String[] args) {
 
-        Path baseCasePlans = Paths.get(""); //fill in relative path of basecase_plans
-        Path policyCasePlans = Paths.get(""); //fill in relative path of policycase_plans
-        File AgentsOnLinks = new File("scenarios/berlin-v5.5-1pct/data/homework 2/linksKudamm.txt");
+//inputFiles
+        Path baseCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/homework 2/Nullfall/berlin-v5.5-1pct.output_plans_base.xml.gz"); // <-- fill in relative path of basecase_plans
+        Path policyCasePlans = Paths.get("scenarios/berlin-v5.5-1pct/data/homework 2/Planfall/berlin-v5.5-1pct.output_plans_policy.xml.gz"); // <-- fill in relative path of policycase_plans
+        File AgentsOnLinks = new File("scenarios/berlin-v5.5-1pct/data/homework 2/linksKudamm.txt"); // <-- fill in relative path of txt-File with links
+
+//outputFiles
+        File baseCaseSummary = new File("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudamm_base.txt"); // <-- fill in relative Path for new txt-File
+        File policyCaseSummary = new File("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudamm_policy.txt"); // <-- fill in relative Path for new txt-File
+        File summary = new File (""); // <-- fill in relative Path for new txt-File
 
         Scenario baseCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader baseCasePopulationReader = new PopulationReader(baseCaseScenario);
         baseCasePopulationReader.readFile(baseCasePlans.toString());
 
+        List<Id<Link>> links = bufferedReader(AgentsOnLinks);
+        List<Id<Person>> baseCaseReceivedAgents = agentsOnLinks(baseCaseScenario, links);
+
+        System.out.println("BASE CASE");
+        System.out.println(baseCaseReceivedAgents.toString());
+        bufferedWriterToTxt(baseCaseReceivedAgents, baseCaseSummary);
+
         Scenario policyCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader policyCasePopulationReader = new PopulationReader(policyCaseScenario);
         policyCasePopulationReader.readFile(policyCasePlans.toString());
 
-        List<Id<Link>> links = bufferedReader(AgentsOnLinks);
-        List<Id<Person>> baseCaseReceivedAgents = agentsOnLinks(baseCaseScenario, links);
         List<Id<Person>> policyCaseReceivedAgents = agentsOnLinks(policyCaseScenario, links);
 
-        System.out.println("BASE CASE");
-        System.out.println(baseCaseReceivedAgents.toString());
         System.out.println("POLICY CASE");
         System.out.println(policyCaseReceivedAgents.toString());
+        bufferedWriterToTxt(baseCaseReceivedAgents, policyCaseSummary);
     }
 
     private static List<Id<Link>> bufferedReader(File linkFile) {
@@ -64,8 +74,7 @@ public class FindAgentsOnLinks {
         return networkLinks;
     }
 
-    private static void bufferedWriterToTxt(List<Id<Person>> list) {
-        File outputFile = new File(""); //insert relative Path for new txt-File
+    private static void bufferedWriterToTxt(List<Id<Person>> list, File outputFile) {
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -80,7 +89,7 @@ public class FindAgentsOnLinks {
     }
 /*
     private static void bufferedWriterToCsv(List<Id<Person>> baseCaseAgents, List<Id<Person>> policyCaseAgents) {
-        File outputFile = new File(""); //insert relative Path for new csv-File
+        File outputFile = new File("scenarios/berlin-v5.5-1pct/data/homework 2/agentsOnKudamm_both.txt"); // <-- fill in relative Path for new csv-File
         try {
             FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

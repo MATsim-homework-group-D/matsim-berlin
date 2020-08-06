@@ -30,7 +30,7 @@ public class LinkEventHandler implements LinkEnterEventHandler, LinkLeaveEventHa
         this.numberOfLinks = this.linkIds.size();
         this.volumeLink = new int[30][numberOfLinks];
         try {
-            String outputFile = "scenarios/berlin-v5.5-1pct/data/homework 2/linkvolumes_policycase.csv";
+            String outputFile = "scenarios/berlin-v5.5-1pct/data/homework 2/linkvolumes_basecase_extended.csv";
             FileWriter fileWriter = new FileWriter(outputFile);
             bufferedWriter = new BufferedWriter(fileWriter);
         }

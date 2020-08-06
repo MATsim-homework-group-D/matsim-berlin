@@ -21,7 +21,7 @@ public class RunEventHandler {
 
     public static void main(String[] args) {
 
-        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/homework 2/Planfall/it.249/berlin-v5.5-1pct.249.events.xml.gz";
+        String eventInputFile = "scenarios/berlin-v5.5-1pct/data/homework 2/Nullfall/output_without_kantstrasse/it.249/berlin-v5.5-1pct.249.events.xml.gz";
         File fileWithLinksToAnalyze = new File("scenarios/berlin-v5.5-1pct/data/homework 2/linksToAnalyze.txt");
         List<Id<Link>> linksToAnalyze = bufferedReader(fileWithLinksToAnalyze);
 
