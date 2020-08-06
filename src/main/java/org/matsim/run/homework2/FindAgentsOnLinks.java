@@ -21,7 +21,7 @@ public class FindAgentsOnLinks {
 
         Path baseCasePlans = Paths.get(""); //fill in relative path of basecase_plans
         Path policyCasePlans = Paths.get(""); //fill in relative path of policycase_plans
-        File kudammLinks = new File("scenarios/berlin-v5.5-1pct/data/linksKudamm.txt");
+        File AgentsOnLinks = new File("scenarios/berlin-v5.5-1pct/data/homework 2/linksKudamm.txt");
 
         Scenario baseCaseScenario = ScenarioUtils.createScenario(ConfigUtils.createConfig());
         PopulationReader baseCasePopulationReader = new PopulationReader(baseCaseScenario);
@@ -31,7 +31,7 @@ public class FindAgentsOnLinks {
         PopulationReader policyCasePopulationReader = new PopulationReader(policyCaseScenario);
         policyCasePopulationReader.readFile(policyCasePlans.toString());
 
-        List<Id<Link>> links = bufferedReader(kudammLinks);
+        List<Id<Link>> links = bufferedReader(AgentsOnLinks);
         List<Id<Person>> baseCaseReceivedAgents = agentsOnLinks(baseCaseScenario, links);
         List<Id<Person>> policyCaseReceivedAgents = agentsOnLinks(policyCaseScenario, links);
 

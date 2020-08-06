@@ -64,7 +64,7 @@ public class U1ScheduleModifier {
                 String endLink = networkRoute.getEndLinkId().toString();
                 networkRoute.setLinkIds(Id.createLinkId("pt_43069"),liste,Id.createLinkId(endLink));
             }
-
+/*
             if (i>1) {
                 List<Id<Link>> routeLinkIds = transitRoutes[i].getRoute().getLinkIds();
                 liste.addAll(routeLinkIds);
@@ -77,10 +77,17 @@ public class U1ScheduleModifier {
 
                 String startLink = networkRoute.getStartLinkId().toString();
                 networkRoute.setLinkIds(Id.createLinkId(startLink),liste,Id.createLinkId("U1_006"));
+
+                U1.addRoute();
+                transitRoutes[i].getRoute().setLinkIds();
+                transitSchedule.addStopFacility();
+                transitSchedule.addTransitLine();
+                tsf.create
+
             }
 
 
-/*
+
                 List<TransitRouteStop> oldStops = transitRoutes[i].getStops();
                 List<TransitRouteStop> newStops = new ArrayList<>();
                 TransitStopFacility stopFacility = null;
