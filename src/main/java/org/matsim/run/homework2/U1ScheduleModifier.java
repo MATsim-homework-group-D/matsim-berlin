@@ -12,25 +12,24 @@ import org.matsim.pt.transitSchedule.api.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class U1ScheduleModifier {
 
     public static void main(String[] args) {
 
+//base
         Config config = ConfigUtils.loadConfig("scenarios/berlin-v5.5-1pct/input/berlin-v5.5-1pct.config_without_kantstrasse.xml");
         Scenario scenario = ScenarioUtils.createScenario(config);
 
-        Path inputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/berlin-v5.5-transit-schedule.xml.gz");
-        Path outputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/test-transit-schedule_friday.xml.gz");
+        Path inputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/berlin-v5.5-transit-schedule.xml.gz"); //relative path to input transitScheduleFile
+        Path outputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/test-transit-schedule_tuesday.xml.gz"); //relative path to output transitScheduleFile
 
         TransitScheduleReader reader = new TransitScheduleReader(scenario);
         reader.readFile(inputTransitSchedule.toString());
 
         TransitSchedule transitSchedule = scenario.getTransitSchedule();
-
+        TransitScheduleFactory tsf = transitSchedule.getFactory();
 
 //<stopFacilitiy>
         //coordinates
@@ -42,7 +41,6 @@ public class U1ScheduleModifier {
         Coord u_Theodor_Heuss_Platz = new Coord(4586531.200568646,5820391.249467583);
 
         //facilities
-        TransitScheduleFactory tsf = transitSchedule.getFactory();
         TransitStopFacility u1_stop_001 = tsf.createTransitStopFacility(Id.create("U1_stop_001", TransitStopFacility.class), u_Bleibtreustr, false);
         TransitStopFacility u1_stop_002 = tsf.createTransitStopFacility(Id.create("U1_stop_002", TransitStopFacility.class), u_Adenauerplatz, false);
         TransitStopFacility u1_stop_003 = tsf.createTransitStopFacility(Id.create("U1_stop_003", TransitStopFacility.class), u_Kracauerplatz, false);
@@ -85,7 +83,6 @@ public class U1ScheduleModifier {
         u1_stop_060.setLinkId(Id.createLinkId("U1_050"));
         transitSchedule.getFacilities().get(Id.create("070201013302",TransitStopFacility.class)).setLinkId(Id.createLinkId("U1_060"));
 
-
         //add to TransitSchedule
         transitSchedule.addStopFacility(u1_stop_001);
         transitSchedule.addStopFacility(u1_stop_002);
@@ -100,58 +97,33 @@ public class U1ScheduleModifier {
         transitSchedule.addStopFacility(u1_stop_050);
         transitSchedule.addStopFacility(u1_stop_060);
 //</stopFacilitiy>
-//<transitroute>
 
-        TransitLine U1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
-        Map<Id<TransitRoute>, TransitRoute> routes = U1.getRoutes();
-        int size = routes.size();
+//<transitroute>
+        TransitLine u1 = transitSchedule.getTransitLines().get(Id.create("U1---17512_400",TransitLine.class));
+        int size = u1.getRoutes().size();
         TransitRoute[] transitRoutes = new TransitRoute[size];
+
 
         for (int i=0; i<size;i++) {
             String coreRoute = "U1---17512_400_" + i;
-            transitRoutes[i] = routes.get(Id.create(coreRoute, TransitRoute.class));
+            transitRoutes[i] = u1.getRoutes().get(Id.create(coreRoute, TransitRoute.class));
 
-//<routes>
-
-            NetworkRoute networkRoute = transitRoutes[i].getRoute();
-            List<Id<Link>> liste = new ArrayList<>();
+//safing all elements of transitroute
+            //transportMode
+            String transportMode = transitRoutes[i].getTransportMode();
+            //Departures
+            Map<Id<Departure>, Departure> departureMap = transitRoutes[i].getDepartures();
+            Iterator<Id<Departure>> iterator = departureMap.keySet().iterator();
+            List<Departure> departures = new ArrayList<>();
+            while (iterator.hasNext()) {
+                Id<Departure> next = iterator.next();
+                departures.add(departureMap.get(next));
+            }
+            //routeProfile
+            List<TransitRouteStop> oldstops = transitRoutes[i].getStops();
+            List<TransitRouteStop> newstops = new ArrayList<>();
 
             if (i<2) {
-                List<Id<Link>> routeLinkIds = networkRoute.getLinkIds();
-                String endLink = networkRoute.getEndLinkId().toString();
-
-                liste.add(Id.createLinkId("U1_010"));
-                liste.add(Id.createLinkId("U1_020"));
-                liste.add(Id.createLinkId("U1_030"));
-                liste.add(Id.createLinkId("U1_040"));
-                liste.add(Id.createLinkId("U1_050"));
-                liste.add(Id.createLinkId("U1_060"));
-                liste.addAll(routeLinkIds);
-
-                networkRoute.setLinkIds(Id.createLinkId("pt_43069"),liste,Id.createLinkId(endLink));
-            }
-
-            if (i>1) {
-                List<Id<Link>> routeLinkIds = networkRoute.getLinkIds();
-                String endLink = networkRoute.getEndLinkId().toString();
-                String startLink = networkRoute.getStartLinkId().toString();
-
-                liste.addAll(routeLinkIds);
-                liste.add(Id.createLinkId(endLink));
-                liste.add(Id.createLinkId("U1_001"));
-                liste.add(Id.createLinkId("U1_002"));
-                liste.add(Id.createLinkId("U1_003"));
-                liste.add(Id.createLinkId("U1_004"));
-                liste.add(Id.createLinkId("U1_005"));
-
-                networkRoute.setLinkIds(Id.createLinkId(startLink),liste,Id.createLinkId("U1_060"));
-            }
-//</routes>
-//</transitroute>
-            if (i<2) {
-                List<TransitRouteStop> oldstops = transitRoutes[i].getStops();
-                List<TransitRouteStop> newstops = new ArrayList<>();
-
                 TransitRouteStop east_01 = tsf.createTransitRouteStop(u1_stop_010, 0, 0);
                 TransitRouteStop east_02 = tsf.createTransitRouteStop(u1_stop_020, 90, 90);
                 TransitRouteStop east_03 = tsf.createTransitRouteStop(u1_stop_030, 210, 210);
@@ -172,22 +144,77 @@ public class U1ScheduleModifier {
                     double olddeparture = routeStop.getDepartureOffset().seconds();
                     double newarrival = oldarrival + 570;
                     double newdeparture = olddeparture + 570;
-                    TransitRouteStop east_xx = tsf.createTransitRouteStop(facility,newarrival,newdeparture);
+                    TransitRouteStop east_xx = tsf.createTransitRouteStop(facility, newarrival, newdeparture);
                     newstops.add(east_xx);
                 }
-                oldstops.remove(0);
-                oldstops.remove(1);
-                oldstops.remove(2);
-                oldstops.remove(3);
-                oldstops.addAll(newstops);
             }
 
-            System.out.println(transitRoutes[i].getRoute().getStartLinkId().toString());
-            System.out.println(transitRoutes [i].getRoute().getLinkIds().toString());
-            System.out.println("----------------------------");
+            if (i>1) {
+                for (TransitRouteStop routeStop : oldstops) {
+                    TransitStopFacility facility = routeStop.getStopFacility();
+                    TransitRouteStop west_xx = tsf.createTransitRouteStop(facility, routeStop.getArrivalOffset().seconds(), routeStop.getDepartureOffset().seconds());
+                    newstops.add(west_xx);
+                }
+                double time_uhland = oldstops.get(12).getDepartureOffset().seconds();
+
+                TransitRouteStop west_01 = tsf.createTransitRouteStop(u1_stop_001, time_uhland + 60, time_uhland + 60);
+                TransitRouteStop west_02 = tsf.createTransitRouteStop(u1_stop_002, time_uhland + 150, time_uhland + 150);
+                TransitRouteStop west_03 = tsf.createTransitRouteStop(u1_stop_003, time_uhland + 240, time_uhland + 240);
+                TransitRouteStop west_04 = tsf.createTransitRouteStop(u1_stop_004, time_uhland + 360, time_uhland + 360);
+                TransitRouteStop west_05 = tsf.createTransitRouteStop(u1_stop_005, time_uhland + 480, time_uhland + 480);
+                TransitRouteStop west_06 = tsf.createTransitRouteStop(u1_stop_006, time_uhland + 570, time_uhland + 570);
+
+                newstops.add(west_01);
+                newstops.add(west_02);
+                newstops.add(west_03);
+                newstops.add(west_04);
+                newstops.add(west_05);
+                newstops.add(west_06);
+            }
+
+            //route
+            NetworkRoute oldRouteBody = transitRoutes[i].getRoute();
+            List<Id<Link>> newRouteBody = new ArrayList<>();
+
+            List<Id<Link>> routeLinkIds = oldRouteBody.getLinkIds();
+            String startLink = oldRouteBody.getStartLinkId().toString();
+            String endLink = oldRouteBody.getEndLinkId().toString();
+
+//deleting transitroute and creating new transitroute with same id, same transport mode and new stops
+            u1.removeRoute(u1.getRoutes().get(Id.create(coreRoute, TransitRoute.class)));
+            TransitRoute newTransitRoute = tsf.createTransitRoute(Id.create(coreRoute, TransitRoute.class), oldRouteBody, newstops, transportMode);
+
+            for (Departure departure : departures) {
+                newTransitRoute.addDeparture(departure);
+            }
+
+            u1.addRoute(newTransitRoute);
+
+//modification of route
+            if (i<2) {
+                newRouteBody.add(Id.createLinkId("U1_010"));
+                newRouteBody.add(Id.createLinkId("U1_020"));
+                newRouteBody.add(Id.createLinkId("U1_030"));
+                newRouteBody.add(Id.createLinkId("U1_040"));
+                newRouteBody.add(Id.createLinkId("U1_050"));
+                newRouteBody.add(Id.createLinkId("U1_060"));
+                newRouteBody.addAll(routeLinkIds);
+                oldRouteBody.setLinkIds(Id.createLinkId("pt_43069"),newRouteBody,Id.createLinkId(endLink));
+            }
+
+            if (i>1) {
+                newRouteBody.addAll(routeLinkIds);
+                newRouteBody.add(Id.createLinkId(endLink));
+                newRouteBody.add(Id.createLinkId("U1_001"));
+                newRouteBody.add(Id.createLinkId("U1_002"));
+                newRouteBody.add(Id.createLinkId("U1_003"));
+                newRouteBody.add(Id.createLinkId("U1_004"));
+                newRouteBody.add(Id.createLinkId("U1_005"));
+                oldRouteBody.setLinkIds(Id.createLinkId(startLink),newRouteBody,Id.createLinkId("U1_060"));
+            }
         }
+//</transitroute>
 
         new TransitScheduleWriter(transitSchedule).writeFile(outputTransitSchedule.toString());
-
     }
 }
