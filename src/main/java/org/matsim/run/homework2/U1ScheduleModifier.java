@@ -23,7 +23,7 @@ public class U1ScheduleModifier {
         Scenario scenario = ScenarioUtils.createScenario(config);
 
         Path inputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/berlin-v5.5-transit-schedule.xml.gz"); //relative path to input transitScheduleFile
-        Path outputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/test-transit-schedule_tuesday.xml.gz"); //relative path to output transitScheduleFile
+        Path outputTransitSchedule = Paths.get("scenarios/berlin-v5.5-1pct/data/TestFiles/new_transit-schedule.xml.gz"); //relative path to output transitScheduleFile
 
         TransitScheduleReader reader = new TransitScheduleReader(scenario);
         reader.readFile(inputTransitSchedule.toString());
@@ -179,7 +179,7 @@ public class U1ScheduleModifier {
             List<Id<Link>> routeLinkIds = oldRouteBody.getLinkIds();
             String startLink = oldRouteBody.getStartLinkId().toString();
             String endLink = oldRouteBody.getEndLinkId().toString();
-
+            
 //deleting transitroute and creating new transitroute with same id, same transport mode and new stops
             u1.removeRoute(u1.getRoutes().get(Id.create(coreRoute, TransitRoute.class)));
             TransitRoute newTransitRoute = tsf.createTransitRoute(Id.create(coreRoute, TransitRoute.class), oldRouteBody, newstops, transportMode);
@@ -210,7 +210,7 @@ public class U1ScheduleModifier {
                 newRouteBody.add(Id.createLinkId("U1_003"));
                 newRouteBody.add(Id.createLinkId("U1_004"));
                 newRouteBody.add(Id.createLinkId("U1_005"));
-                oldRouteBody.setLinkIds(Id.createLinkId(startLink),newRouteBody,Id.createLinkId("U1_060"));
+                oldRouteBody.setLinkIds(Id.createLinkId(startLink),newRouteBody,Id.createLinkId("U1_006"));
             }
         }
 //</transitroute>
